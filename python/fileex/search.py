@@ -1,7 +1,7 @@
 import pathlib
 
 class Searcher:
-    def _FindFileByNameEx(searchPath: str, fileName: str) -> list[pathlib.Path]:
+    def _FindFileByNameEx(self, searchPath: str, fileName: str) -> list[pathlib.Path]:
         fileList = []
         path = pathlib.Path(searchPath)
         if not path.exists():

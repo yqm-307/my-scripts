@@ -15,10 +15,10 @@ def ToFileType(fileType: str):
         "f" : emFileType.file,
         "d" : emFileType.directory}
 
-    if len(fileType) == 0:
+    if fileType == None:
         return emFileType.all
-    
-    if fileType in mapper.keys():
+
+    if not fileType in mapper.keys():
         raise -1
 
     return mapper.get(fileType)
@@ -28,18 +28,22 @@ def Process(searchPath: str, fileName: str, fileType: str):
         raise ValueError(str.format("bad search path:{}", searchPath))
     if len(fileName) <= 0:
         raise ValueError(str.format("bad filename:{}", fileName))
-    
-    search = Searcher
+
+    result = []
+    search = Searcher()
 
     match ToFileType(fileType):
         case emFileType.file:
-            search.FindFile(searchPath, fileName)
+            result = search.FindFile(searchPath=searchPath, fileName=fileName)
         case emFileType.directory:
-            search.FindFolder(searchPath, fileName)
+            result = search.FindFolder(searchPath=searchPath, folderName=fileName)
         case emFileType.all:
-            search.Find(searchPath, fileName)
+            result = search.Find(searchPath=searchPath, fileName=fileName)
         case _:
             raise ValueError(str.format("bad filetype:{}", fileType))
+    
+    for v in result:
+        print(v.absolute().as_posix())
     pass
 
 ## 单参数赋值action
